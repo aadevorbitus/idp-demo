@@ -1,0 +1,25 @@
+spec_version: 2
+description: simple shell
+# blueprint inputs can be provided by the user, API or CI plugin when creating an environment from this blueprint.
+inputs:
+  testvalue:
+    type: string
+    default: example
+# blueprint outputs define which data that was generated during environment provisioning will be returned to the user, API or CI.
+# outputs:
+#   Instance_IP:
+#     value: '{{ .grains.setup-script.outputs.IP }}'
+grains:
+  setup-script:
+    kind: shell
+    spec:
+      agent:
+        name: quali-torque-akeyless
+        # service-account: default
+      files:
+      - path: "scripts/test.sh"
+        source: idp-demo
+      activities:
+        deploy:
+          commands:
+          - ./test.sh {{ .inputs.testvalue }}
